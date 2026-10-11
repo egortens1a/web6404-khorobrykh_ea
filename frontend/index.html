@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PyTorch Model Visualizer &amp; Editor</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <img src="img/logo.svg" alt="Логотип">
+      <span>PyTorch&nbsp;Visualizer</span>
+    </div>
+    <nav>
+      <a class="nav-link active" href="index.html">Главная</a>
+      <a class="nav-link" href="editor.html">Редактор</a>
+      <a class="nav-link" href="graph.html">Визуализация</a>
+      <a class="nav-link" href="metrics.html">Метрики</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <img src="img/logo.svg" alt="Логотип PyTorch Model Visualizer: схема нейросети">
+      <div>
+        <span class="badge">torch 2.x</span>
+        <span class="badge">nn.Module</span>
+        <span class="badge">HTML5 + CSS3</span>
+      </div>
+      <h1>PyTorch Model Visualizer &amp; Editor</h1>
+      <p class="subtitle">
+        Инструмент для быстрого прототипирования нейросетей: редактируйте
+        гиперпараметры, смотрите архитектуру слой за слоем и следите
+        за метриками обучения в одном месте.
+      </p>
+      <a class="btn" href="editor.html">Открыть редактор &rarr;</a>
+      <a class="btn btn-secondary" href="graph.html">Смотреть схему</a>
+    </section>
+
+    <section class="cards">
+      <div class="card">
+        <h3>Редактор кода</h3>
+        <p>Класс модели <code>nn.Module</code> и форма настройки гиперпараметров на одной странице.</p>
+      </div>
+      <div class="card">
+        <h3>Граф архитектуры</h3>
+        <p>Наглядная схема <span class="badge">Input &rarr; Linear &rarr; ReLU &rarr; Output</span> с размерностями тензоров.</p>
+      </div>
+      <div class="card">
+        <h3>Логи обучения</h3>
+        <p>Таблица Epoch / Loss / Accuracy для сравнения запусков и выбора лучшего чекпоинта.</p>
+      </div>
+    </section>
+  </main>
+  <footer>Лабораторная работа №2 | HTML + CSS</footer>
+</body>
+</html>

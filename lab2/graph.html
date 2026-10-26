@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Визуализация</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="brand"><img src="img/logo.svg" alt="Логотип"><span>PyTorch Visualizer</span></div>
+    <nav>
+      <a class="nav-link" href="index.html">Главная</a>
+      <a class="nav-link" href="editor.html">Редактор</a>
+      <a class="nav-link active" href="graph.html">Визуализация</a>
+      <a class="nav-link" href="metrics.html">Метрики</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Архитектура модели</h1>
+    <section class="network">
+      <div class="layer layer-io"><h3>Input</h3><span class="shape">[64, 784]</span></div>
+      <div class="layer layer-linear"><h3>Linear</h3><span class="shape">784 &rarr; 128</span></div>
+      <div class="layer layer-act"><h3>ReLU</h3><span class="shape">[64, 128]</span></div>
+      <div class="layer layer-linear"><h3>Linear</h3><span class="shape">128 &rarr; 10</span></div>
+      <div class="layer layer-io"><h3>Output</h3><span class="shape">[64, 10]</span></div>
+    </section>
+
+    <!-- Оценка нагрузки на GPU: batch = 64  -->
+    <section class="dtype">
+      <h2>Оценка нагрузки на GPU</h2>
+      <input type="radio" name="dtype" id="t32" checked><label for="t32">fp32</label>
+      <input type="radio" name="dtype" id="t16"><label for="t16">fp16</label>
+      <input type="radio" name="dtype" id="t8"><label for="t8">fp8</label>
+
+      <div class="dt-panel p32">
+        <table>
+          <thead>
+            <tr>
+              <th class="col-left">Показатель</th>
+              <th class="col-right">Обучение</th>
+              <th class="col-right">Инференс</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-left">Память GPU</td><td class="col-right">1.93 МБ</td><td class="col-right">0.64 МБ</td></tr>
+            <tr><td class="col-left">FLOPs на батч (64)</td><td class="col-right">39.0 M</td><td class="col-right">13.0 M</td></tr>
+            <tr><td class="col-left">FLOPs на байт весов</td><td class="col-right">96</td><td class="col-right">32</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dt-panel p16">
+        <table>
+          <thead>
+            <tr>
+              <th class="col-left">Показатель</th>
+              <th class="col-right">Обучение</th>
+              <th class="col-right">Инференс</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-left">Память GPU</td><td class="col-right">1.78 МБ</td><td class="col-right">0.32 МБ</td></tr>
+            <tr><td class="col-left">FLOPs на батч (64)</td><td class="col-right">39.0 M</td><td class="col-right">13.0 M</td></tr>
+            <tr><td class="col-left">FLOPs на байт весов</td><td class="col-right">192</td><td class="col-right">64</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dt-panel p8">
+        <table>
+          <thead>
+            <tr>
+              <th class="col-left">Показатель</th>
+              <th class="col-right">Обучение</th>
+              <th class="col-right">Инференс</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-left">Память GPU</td><td class="col-right">1.50 МБ</td><td class="col-right">0.16 МБ</td></tr>
+            <tr><td class="col-left">FLOPs на батч (64)</td><td class="col-right">39.0 M</td><td class="col-right">13.0 M</td></tr>
+            <tr><td class="col-left">FLOPs на байт весов</td><td class="col-right">384</td><td class="col-right">128</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note">Память обучения = веса + градиенты + состояния Adam + активации. Память инференса = веса + активации.</p>
+      <p class="note">FLOPs на байт весов показывает, сколько вычислений приходится на каждый загруженный байт. Чем число меньше, тем сильнее модель упирается в память, а не в вычисления. Тип fp16 или fp8 увеличивает его в 2 и 4 раза.</p>
+      <p class="note">Для любой видеокарты: на каждый 1 TFLOPS её мощности приходится не более +- 4.9 млн примеров/с инференса и +- 1.6 млн примеров/с обучения. Умножьте на TFLOPS своей карты.</p>
+    </section>
+
+    <p class="note">Параметров всего: 101 770. Результаты обучения - на странице <a href="metrics.html">метрик</a>.</p>
+  </main>
+  <footer>Лабораторная работа №2 | HTML + CSS</footer>
+</body>
+</html>

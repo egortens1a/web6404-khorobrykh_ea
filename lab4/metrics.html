@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Метрики - PyTorch Model Visualizer</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">
+      <svg class="brand__logo" viewBox="0 0 160 160" role="img" aria-label="Логотип PyTorch Visualizer"><use href="img/logo.svg#logo"></use></svg>
+      <span>PyTorch Visualizer</span>
+    </div>
+    <nav class="nav" aria-label="Основная навигация">
+      <a class="nav__link" href="index.html">Главная</a>
+      <a class="nav__link" href="editor.html">Редактор</a>
+      <a class="nav__link" href="graph.html">Визуализация</a>
+      <a class="nav__link nav__link--active" aria-current="page" href="metrics.html">Метрики</a>
+    </nav>
+  </header>
+
+  <main class="page page--metrics">
+    <h1>Логи обучения</h1>
+    <p class="note">Статический пример из ЛР2. Конструктор не запускает обучение; эти значения не относятся к настраиваемой модели.</p>
+
+    <div class="table-scroll">
+      <table>
+        <caption>Метрики по эпохам (train / validation)</caption>
+        <thead>
+          <tr>
+            <th class="table__cell--center">Epoch</th>
+            <th class="table__cell--right">Train Loss</th>
+            <th class="table__cell--right">Val Loss</th>
+            <th class="table__cell--right">Accuracy, %</th>
+            <th class="table__cell--left">Комментарий</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="table__cell--center">1</td>
+            <td class="table__cell--right">2.3012</td>
+            <td class="table__cell--right">1.2013</td>
+            <td class="table__cell--right">41.20</td>
+            <td class="table__cell--left note">инициализация весов</td>
+          </tr>
+          <tr>
+            <td class="table__cell--center">2</td>
+            <td class="table__cell--right">1.1458</td>
+            <td class="table__cell--right">0.8120</td>
+            <td class="table__cell--right">68.35</td>
+            <td class="table__cell--left note">быстрое падение loss</td>
+          </tr>
+          <tr>
+            <td class="table__cell--center">3</td>
+            <td class="table__cell--right">0.7421</td>
+            <td class="table__cell--right">0.6034</td>
+            <td class="table__cell--right">79.10</td>
+            <td class="table__cell--left note"> </td>
+          </tr>
+          <tr>
+            <td class="table__cell--center">4</td>
+            <td class="table__cell--right">0.5530</td>
+            <td class="table__cell--right">0.4950</td>
+            <td class="table__cell--right">84.62</td>
+            <td class="table__cell--left note"> </td>
+          </tr>
+          <tr>
+            <td class="table__cell--center">5</td>
+            <td class="table__cell--right">0.4417</td>
+            <td class="table__cell--right">0.4221</td>
+            <td class="table__cell--right">87.45</td>
+            <td class="table__cell--left note"> </td>
+          </tr>
+          <tr>
+            <td class="table__cell--center">6</td>
+            <td class="table__cell--right">0.3702</td>
+            <td class="table__cell--right">0.3844</td>
+            <td class="table__cell--right">89.03</td>
+            <td class="table__cell--left note"></td>
+          </tr>
+          <tr>
+            <td class="table__cell--center">7</td>
+            <td class="table__cell--right">0.3215</td>
+            <td class="table__cell--right">0.3612</td>
+            <td class="table__cell--right">90.11</td>
+            <td class="table__cell--left note"></td>
+          </tr>
+          <tr>
+            <td class="table__cell--center">8</td>
+            <td class="table__cell--right">0.2893</td>
+            <td class="table__cell--right">0.3490</td>
+            <td class="table__cell--right">90.72</td>
+            <td class="table__cell--left note"> </td>
+          </tr>
+          <tr>
+            <td class="table__cell--center">9</td>
+            <td class="table__cell--right table__cell--best">0.2671</td>
+            <td class="table__cell--right table__cell--best">0.3441</td>
+            <td class="table__cell--right table__cell--best">91.08</td>
+            <td class="table__cell--left table__cell--best">best checkpoint</td>
+          </tr>
+          <tr>
+            <td class="table__cell--center">10</td>
+            <td class="table__cell--right table__cell--bad">0.2540</td>
+            <td class="table__cell--right table__cell--bad">0.3467</td>
+            <td class="table__cell--right table__cell--bad">91.04</td>
+            <td class="table__cell--left table__cell--bad">Возможность переобучения!</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="table__row--best">
+            <td class="table__cell--center">Best</td>
+            <td class="table__cell--right">0.2540</td>
+            <td class="table__cell--right">0.3441</td>
+            <td class="table__cell--right">91.08</td>
+            <td class="table__cell--left">epoch 9 по val loss</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <section class="stats">
+      <div class="stats__item">
+        <span class="stats__value">91.08%</span>
+        <span class="stats__label">лучшая accuracy</span>
+      </div>
+      <div class="stats__item">
+        <span class="stats__value">80.08%</span>
+        <span class="stats__label">лучшая precision</span>
+      </div>
+      <div class="stats__item">
+        <span class="stats__value">93.12%</span>
+        <span class="stats__label">лучшая еще какая нибудь метрика</span>
+      </div>
+    </section>
+
+    <p class="page__actions">
+      <a class="button button--secondary" href="graph.html">К схеме модели</a>
+      <a class="button" href="index.html">На главную</a>
+    </p>
+  </main>
+<footer class="site-footer">Лабораторная работа 4 | HTML + CSS + JavaScript</footer>
+</body>
+</html>

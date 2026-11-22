@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Редактор - PyTorch Model Visualizer</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/model-configuration.js" defer></script>
+  <script src="js/model-view.js" defer></script>
+  <script src="js/editor.js" defer></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">
+      <svg class="brand__logo" viewBox="0 0 160 160" role="img" aria-label="Логотип PyTorch Visualizer"><use href="img/logo.svg#logo"></use></svg>
+      <span>PyTorch Visualizer</span>
+    </div>
+    <nav class="nav" aria-label="Основная навигация">
+      <a class="nav__link" href="index.html">Главная</a>
+      <a class="nav__link nav__link--active" aria-current="page" href="editor.html" data-model-link>Редактор</a>
+      <a class="nav__link" href="graph.html" data-model-link>Визуализация</a>
+      <a class="nav__link" href="metrics.html">Метрики</a>
+    </nav>
+  </header>
+
+  <main class="page page--editor">
+    <div class="editor-toolbar">
+      <div><h1>Конструктор модели</h1><p class="note">Добавляйте слои и выбирайте входы. Граф и расчёты обновляются сразу.</p></div>
+      <div class="editor-toolbar__examples" aria-label="Примеры архитектур"><button class="button button--secondary" type="button" data-example="mlp">MLP</button><button class="button button--secondary" type="button" data-example="cnn">CNN + skip</button></div>
+    </div>
+    <p class="model-status" id="model-status" role="alert"></p>
+    <div class="editor">
+      <section class="editor__settings" aria-label="Настройки модели">
+        <form class="model-form" id="model-form" action="graph.html" method="get">
+          <input type="hidden" name="config" id="serialized-config">
+          <div class="model-form__settings">
+            <label class="model-form__shape">Вход: F или C, H, W<input type="text" id="input-shape" value="784" placeholder="784 или 3, 32, 32" required></label>
+            <label>Батч<input type="number" id="batch-size" value="64" min="1" max="65536" required></label>
+            <label>Learning rate<input type="number" id="learning-rate" value="0.001" min="0.00000001" max="1" step="any" required></label>
+          </div>
+          <h2 class="model-form__heading">Слои <span id="layer-count"></span></h2>
+          <div class="layer-list" id="layer-list"></div>
+          <div class="model-form__add"><label class="visually-hidden" for="new-layer-type">Тип нового слоя</label><select id="new-layer-type"></select><button class="button button--secondary" id="add-layer" type="button">Добавить</button></div>
+          <div class="model-form__output"><label>Выход модели<select id="output-id"></select></label><button class="button" type="submit">Разобрать граф</button></div>
+          <details class="compact-help"><summary>Связи и удаление слоёв</summary><p class="note">Add складывает тензоры одинаковой формы. Concat объединяет признаки/каналы. Выбирайте входы из предыдущих слоёв. При удалении слоя его потребители подключаются к его первому входу. Неиспользуемые слои показаны бледнее.</p></details>
+        </form>
+      </section>
+      <section class="editor__preview" data-preview aria-label="Модель и расчёты">
+        <h2>Граф модели</h2>
+        <div class="stats stats--compact" data-model-summary aria-live="polite"></div>
+        <div class="model-graph" data-model-diagram></div>
+        <div class="preview-caption"><span class="note" data-model-note></span><span class="note">Пунктир - skip-связи</span></div>
+        <section class="model-code" aria-labelledby="model-code-title">
+          <h2 id="model-code-title">Код модели</h2>
+          <pre><code data-model-code></code></pre>
+        </section>
+        <div class="preview-tabs" role="group" aria-label="Таблицы модели">
+          <input class="preview-tabs__input" type="radio" name="preview" id="tab-layers" checked><label for="tab-layers">Слои</label>
+          <input class="preview-tabs__input" type="radio" name="preview" id="tab-memory"><label for="tab-memory">Память</label>
+          <div class="preview-panel" id="panel-layers" aria-label="Слои и размерности">
+            <div class="table-scroll">
+              <table class="table">
+                <thead><tr><th>Слой</th><th>Операция</th><th>Входы</th><th>Выход</th><th>Параметры</th><th>FLOPs/батч, ~</th><th>В модели</th></tr></thead>
+                <tbody data-model-layers></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="preview-panel" id="panel-memory" aria-label="Оценка памяти инференса">
+            <div class="table-scroll">
+              <table class="table">
+                <thead><tr><th>Хранение</th><th>Веса, МиБ</th><th>Активации, МиБ</th><th>Буферы, МиБ</th><th>Сумма, МиБ</th></tr></thead>
+                <tbody data-model-memory></tbody>
+              </table>
+            </div>
+            <details class="compact-help">
+              <summary>Как считаются оценки</summary>
+              <p class="note">Это расчёт объёма тензоров, не измерение GPU. Суммируются веса и выходы активных узлов с учётом батча; Flatten и Dropout в eval не выделяют повторный буфер. Буферы BatchNorm оценены в fp32. Не учтены рабочие буферы операций, аллокатор и возможное переиспользование памяти. fp8 - теоретический объём хранения, без обещания поддержки операций на GPU.</p>
+              <p class="note">FLOPs: 2 операции на умножение с накоплением в Linear/Conv2d, bias, Add, AvgPool и приближённо BatchNorm в режиме eval. Сравнения ReLU/MaxPool и стоимость GELU/Tanh не учитываются; Dropout в eval не выполняется. Concat перемещает данные, но не добавляет FLOPs. Это оценка, а не время выполнения.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer">Лабораторная работа 4 | HTML + CSS + JavaScript</footer>
+
+</body>
+</html>

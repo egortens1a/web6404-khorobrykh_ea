@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Визуализация</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/model-configuration.js" defer></script>
+  <script src="js/model-view.js" defer></script>
+  <script src="js/graph.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand"><svg class="brand__logo" viewBox="0 0 160 160" role="img" aria-label="Логотип PyTorch Visualizer"><use href="img/logo.svg#logo"></use></svg><span>PyTorch Visualizer</span></div>
+    <nav class="nav" aria-label="Основная навигация">
+      <a class="nav__link" href="index.html">Главная</a>
+      <a class="nav__link" href="editor.html" data-model-link>Редактор</a>
+      <a class="nav__link nav__link--active" aria-current="page" href="graph.html" data-model-link>Визуализация</a>
+      <a class="nav__link" href="metrics.html">Метрики</a>
+    </nav>
+  </header>
+  <main class="page page--graph">
+    <div class="editor-toolbar"><h1>Архитектура модели</h1><a class="button" href="editor.html" data-model-link>Настроить модель</a></div>
+    <p class="model-status" id="model-status" role="alert"></p>
+    <section class="model-preview" data-preview aria-label="Разбор графа">
+      <div class="graph-controls">
+        <label for="graph-layer">Слой</label>
+        <select id="graph-layer"><option value="">Весь граф</option></select>
+        <span class="note">Выберите слой, чтобы проследить его связи. Пунктиром показаны обходные связи.</span>
+      </div>
+      <div class="model-graph model-graph--inspect" data-model-diagram></div>
+      <dl class="graph-details" id="graph-details" aria-live="polite" hidden>
+        <div><dt>Откуда идут данные</dt><dd id="graph-inputs"></dd></div>
+        <div><dt>Куда идут данные</dt><dd id="graph-consumers"></dd></div>
+        <div><dt>Форма выхода</dt><dd id="graph-shape"></dd></div>
+        <div><dt>Параметры</dt><dd id="graph-parameters"></dd></div>
+        <div><dt>Роль</dt><dd id="graph-role"></dd></div>
+      </dl>
+    </section>
+  </main>
+  <footer class="site-footer">Лабораторная работа 4 | HTML + CSS + JavaScript</footer>
+</body>
+</html>
